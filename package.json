@@ -1,0 +1,29 @@
+{
+  "name": "oyster-cli",
+  "version": "0.0.0",
+  "description": "Check your Oyster balance from terminal",
+  "main": "lib/config",
+  "bin": {
+    "oyster":"./bin/oyster"
+  },
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git@github.com:bencevans/oyster-cli.git"
+  },
+  "keywords": [
+    "oyster",
+    "train",
+    "tube",
+    "london",
+    "tfl",
+    "balance"
+  ],
+  "author": "Ben Evans <ben@bensbit.co.uk> (http://bensbit.co.uk)",
+  "license": "MIT",
+  "dependencies": {
+    "oyster": "~0.1.0"
+  }
+}
