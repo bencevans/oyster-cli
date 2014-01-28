@@ -24,6 +24,6 @@
   "author": "Ben Evans <ben@bensbit.co.uk> (http://bensbit.co.uk)",
   "license": "MIT",
   "dependencies": {
-    "oyster": "~0.1.0"
+    "oyster": "~0.1.1"
   }
 }
