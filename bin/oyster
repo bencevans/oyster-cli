@@ -5,54 +5,50 @@
  */
 
 var Oyster = require('oyster');
-var getConfig = require('../lib/config');
+var prompt = require('cli-prompt');
+var configHelper = require('../lib/config');
 
-/**
- * Helpers
- */
 
-function reportError(err) {
-  console.log('');
-  if(err.code === 'ENOENT') {
-    console.log('You need to create a ~/.oyster file containing:');
-    console.log('');
-    console.log('  USERNAME=INSERT_USERNAME_HERE');
-    console.log('  PASSWORD=INSERT_PASSWORD_HERE');
+function handleError(err) {
+  if(err.code === 'ENOTFOUND') {
+    console.error('error:    unable to connect');
+  } else if(err.message === 'Wrong Credentials') {
+    console.error('error:    wrong credentials');
   } else {
+    console.error('Unknown Error:');
     console.error(err);
   }
-  console.log('');
-  return process.exit(1);
-}
+  process.exit(1);
+ }
 
-/**
- * Commands executed by `oyster <command>`
- */
-
-var commands = {
-  balance: function(client, config) {
-    client.balance(function(err, balance) {
-      if(err) return reportError(err);
-      console.log('');
-      console.log('  Balance: £' + balance);
-      console.log('');
-    });
-  }
-};
-
-/**
- * Exec
- */
-
-getConfig(function(err, config) {
-  if(err) return reportError(err);
-
-  var client = Oyster(config.USERNAME, config.PASSWORD, function(err) {
-    if(err) return reportError(err);
-    if(typeof commands[process.argv[2]] === 'function') {
-      return commands[process.argv[2]](client, config);
-    }
-    reportError(new Error('Unknown Command. Try `oyster balance`.'));
+function getBalance(login, callback) {
+  var oyster = new Oyster(login.username, login.password, function(err) {
+    if(err) return callback(err);
+    oyster.balance(callback);
   });
+ }
+
+
+configHelper.get(function(err, config) {
+  prompt.multi([
+  {
+    key: 'username',
+    default: config.username
+  },
+  {
+    key: 'password',
+    type: 'password'
+  }
+  ], function(login) {
+    getBalance(login, function(err, balance) {
+      if(err) return handleError(err);
+      console.log('balance:  £' + balance.toFixed(2));
+
+      configHelper.set({ username: login.username }, function(err) {
+        if(err) return handleError(err);
+      });
+    });
+  });
+
 });
 

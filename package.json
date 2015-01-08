@@ -24,6 +24,7 @@
   "author": "Ben Evans <ben@bensbit.co.uk> (http://bensbit.co.uk)",
   "license": "MIT",
   "dependencies": {
+    "cli-prompt": "^0.4.1",
     "oyster": "^0.2.0"
   }
 }
