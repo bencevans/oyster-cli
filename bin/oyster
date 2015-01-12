@@ -6,8 +6,14 @@
 
 var Oyster = require('oyster');
 var prompt = require('cli-prompt');
+var pkg = require('../package.json');
 var configHelper = require('../lib/config');
+var updateNotifier = require('update-notifier');
 
+updateNotifier({
+  packageName: pkg.name,
+  packageVersion: pkg.version
+}).notify();
 
 function handleError(err) {
   if(err.code === 'ENOTFOUND') {
