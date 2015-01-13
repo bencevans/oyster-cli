@@ -9,6 +9,7 @@ var prompt = require('cli-prompt');
 var pkg = require('../package.json');
 var configHelper = require('../lib/config');
 var updateNotifier = require('update-notifier');
+var debug = require('debug')('oyster-cli');
 
 updateNotifier({
   packageName: pkg.name,
@@ -29,6 +30,7 @@ function handleError(err) {
 
 function getBalance(login, callback) {
   var oyster = new Oyster(login.username, login.password, function(err) {
+    if(err) debug('oyster login err:', err);
     if(err) return callback(err);
     oyster.balance(callback);
   });
